@@ -110,7 +110,7 @@ AIC(group3_2m_lag)
 beep(sound=2)
 ```
 
-Figures for Group 1
+Code for Figures
 
 ```r
 par(mfrow = c(2, 3),        # 2 rows, 3 columns
@@ -169,9 +169,9 @@ plot(group1_2m_lag, select = 2,
 abline(h = 0, lty = 2, col = "gray")
 
 plot(group1_2m_lag, select = 6, scheme =4)
-```
-Figures for Group 2 
-```r
+
+#Figures for Group 2 
+
 plot(group2_2m_lag, select = 4, 
      xlab = "% of Group Fully Vaccinated",
      ylab = "s(% of Group Fully Vaccinated)",
@@ -223,9 +223,9 @@ plot(group2_2m_lag, select = 2,
 abline(h = 0, lty = 2, col = "gray")
 
 plot(group2_2m_lag, select = 6, scheme =4)
-```
-Figures for Group 3 
-```r
+
+#Figures for Group 3 
+
 plot(group3_2m_lag, select = 4, 
      xlab = "% of Group Fully Vaccinated",
      ylab = "s(% of Group Fully Vaccinated)",
@@ -278,4 +278,13 @@ abline(h = 0, lty = 2, col = "gray")
 
 plot(group3_2m_lag, select = 6, scheme = 4)
 ```
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](G1_2m_lag_splines.png)
 
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](G2_2m_lag_splines.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
