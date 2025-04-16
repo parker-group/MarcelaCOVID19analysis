@@ -57,6 +57,8 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 
 Let’s keep building out the analysis and document all updates right here in this repo!
 
+---
+
 ## Age Stratified Models with 2-month Lag (real-time and 1-month lag coming soon!) 
 
 Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
@@ -110,11 +112,11 @@ AIC(group3_2m_lag)
 beep(sound=2)
 ```
 
-AIC group 1: 589,185.9
-AIC group 2: 229,073.2
-AIC group 3: 152,975.1
+AIC group 1: 589,185.9  
+AIC group 2: 229,073.2  
+AIC group 3: 152,975.1  
 
-Code for Figures
+**Code for Figures**
 
 ```r
 par(mfrow = c(2, 3),        # 2 rows, 3 columns
