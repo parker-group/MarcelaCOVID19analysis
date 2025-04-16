@@ -110,6 +110,10 @@ AIC(group3_2m_lag)
 beep(sound=2)
 ```
 
+AIC group 1: 589,185.9
+AIC group 2: 229,073.2
+AIC group 3: 152,975.1
+
 Code for Figures
 
 ```r
