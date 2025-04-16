@@ -57,7 +57,7 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 
 Let’s keep building out the analysis and document all updates right here in this repo!
 
-## Age Stratified Models
+## Age Stratified Models with 2-month Lag (real-time and 1-month lag coming soon!) 
 
 Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
 
