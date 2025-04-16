@@ -56,3 +56,226 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 ...
 
 Let’s keep building out the analysis and document all updates right here in this repo!
+
+## Age Stratified Models
+
+Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
+
+```r
+#Filtering main dataset into 3 groups
+Group1 <- Pre_omicron_2m_lag %>% 
+  filter(Age >= 18 & Age <= 49)
+
+Group2 <- Pre_omicron_2m_lag %>% 
+  filter(Age >= 50 & Age <= 64)
+
+Group3 <- Pre_omicron_2m_lag %>% 
+  filter(Age >= 65)
+```
+
+Models
+```r
+#Group 1
+group1_2m_lag =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                            s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                          + s(Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts") 
+                          + s(Percent_over_65, k = -1, bs = "ts")
+                          + s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group1, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_2m_lag))
+AIC(group1_2m_lag)
+
+#Group 2
+group2_2m_lag =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                            s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                          + s(Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts") 
+                          + s(Percent_over_65, k = -1, bs = "ts")
+                          + s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group2, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_2m_lag))
+AIC(group2_2m_lag)
+
+#Group 3
+group3_2m_lag =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                             s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                           + s(Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts") 
+                           + s(Percent_over_65, k = -1, bs = "ts")
+                           + s(Longitude, Latitude, k = -1, bs = "sos"),
+                           family = binomial, data = Group3, 
+                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_2m_lag))
+AIC(group3_2m_lag)
+beep(sound=2)
+```
+
+Figures for Group 1
+
+```r
+par(mfrow = c(2, 3),        # 2 rows, 3 columns
+    mar   = c(4, 4, 2, 1),
+    cex.main = 0.8,
+    cex.lab = 0.8)
+
+plot(group1_2m_lag, select = 4, 
+     xlab = "% of Group Fully Vaccinated",
+     ylab = "s(% of Group Fully Vaccinated)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "% of Group Fully Vaccinated, 2m lag",
+     ylim = c(-5, 5)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group1_2m_lag, select = 3,
+     xlab = "Week", 
+     ylab = "s(Week)",
+     shade = TRUE,
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Week", 
+     ylim = c(-5, 5))
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group1_2m_lag, select = 1, 
+     xlab = "% of households with ≥4 members",
+     ylab = "s(Percent of households)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "% of households in ZIP with ≥4 members", 
+     ylim = c(-0.6,0.6)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group1_2m_lag, select = 5, 
+     xlab = "Proportion of ZIP over 65",
+     ylab = "s(Proportion of ZIP over 65)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Proportion of ZIP code older than 65",
+     ylim = c(-0.02, 0.02)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group1_2m_lag, select = 2, 
+     xlab = "Population Density",
+     ylab = "s(Population Density)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "ZIP Code Population Density",
+     ylim = c(-0.2, 0.25)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group1_2m_lag, select = 6, scheme =4)
+```
+Figures for Group 2 
+```r
+plot(group2_2m_lag, select = 4, 
+     xlab = "% of Group Fully Vaccinated",
+     ylab = "s(% of Group Fully Vaccinated)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "% of Group Fully Vaccinated, 2m lag",
+     ylim = c(-5, 5)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group2_2m_lag, select = 3,
+     xlab = "Week", 
+     ylab = "s(Week)",
+     shade = TRUE,
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Week", 
+     ylim = c(-5, 5))
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group2_2m_lag, select = 1, 
+     xlab = "% of households with ≥4 members",
+     ylab = "s(Percent of households)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Percent of households in ZIP with ≥4 members", 
+     ylim = c(-0.75,0.6)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group2_2m_lag, select = 5, 
+     xlab = "Proportion of ZIP over 65",
+     ylab = "s(Proportion of ZIP over 65)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Proportion of ZIP code older than 65",
+     ylim = c(-0.7, 0.7)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group2_2m_lag, select = 2, 
+     xlab = "Population Density",
+     ylab = "s(Population Density)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "ZIP Code Population Density",
+     ylim = c(-0.005, 0.005)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group2_2m_lag, select = 6, scheme =4)
+```
+Figures for Group 3 
+```r
+plot(group3_2m_lag, select = 4, 
+     xlab = "% of Group Fully Vaccinated",
+     ylab = "s(% of Group Fully Vaccinated)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "% of Group Fully Vaccinated, 2m lag",
+     ylim = c(-5, 6)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group3_2m_lag, select = 3,
+     xlab = "Week", 
+     ylab = "s(Week)",
+     shade = TRUE,
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Week", 
+     ylim = c(-6, 6))
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group3_2m_lag, select = 1, 
+     xlab = "% of households with ≥4 members",
+     ylab = "s(% of households)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "% of households in ZIP with ≥4 members", 
+     ylim = c(-0.75,0.75)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group3_2m_lag, select = 2, 
+     xlab = "Population Density",
+     ylab = "s(Population Density)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "ZIP Code Population Density",
+     ylim = c(-0.3, 0.3)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group3_2m_lag, select = 5, 
+     xlab = "Proportion of ZIP over 65",
+     ylab = "s(Proportion of ZIP over 65)",
+     shade = TRUE, 
+     shade.col = "#E6F3FF", 
+     rug = TRUE, 
+     main = "Proportion of ZIP code older than 65",
+     ylim = c(-1.2, 0.6)) 
+abline(h = 0, lty = 2, col = "gray")
+
+plot(group3_2m_lag, select = 6, scheme = 4)
+```
+
