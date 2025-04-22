@@ -58,9 +58,9 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 Let’s keep building out the analysis and document all updates right here in this repo!
 
 ---
-## Main Model
+## Full Model
 
-Time Period: March 2020 - November 2021
+Time Period: March 2020 - November 2021  
 Percent vaccinated and time are two separate variables and not included in an interaction term. 
 
 ```r
@@ -72,6 +72,9 @@ full_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4
                       family = binomial, data = Pre_omicron_2m_lag, 
                       method="fREML", select = TRUE, gamma = 1.4, nthreads=8)   
 ```
+**Splines for Main Model**  
+
+![full_model](Full_model_splines.png)
 
 ---
 ## Models Stratified by Age Group
@@ -134,14 +137,17 @@ AIC group 2: 229,137.2
 AIC group 3: 153,026.1  
 
 **Splines for Group 1: ages 18 -49**  
+
 ![Splines for Group 1: ages 18 -49](g1_no_lag.png)
 
 
 **Splines for Group 2: ages 50-64**  
+
 ![Splines for Group 2: ages 50-64](g2_no_lag.png)
 
 
 **Splines for Group 3: ages 65+**  
+
 ![Splines for Group 3: ages 65+](g3_no_lag.png)
 
 ---
@@ -194,14 +200,17 @@ AIC group 2: 229,045.9
 AIC group 3: 152,956.1  
 
 **Splines for Group 1: ages 18 -49**  
+
 ![Splines for Group 1: ages 18 -49](g1_1m_lag.png)
 
 
 **Splines for Group 2: ages 50-64**  
+
 ![Splines for Group 2: ages 50-64](g2_1m_lag.png)
 
 
 **Splines for Group 3: ages 65+**  
+
 ![Splines for Group 3: ages 65+](g3_1m_lag.png)
 
 ---
@@ -254,14 +263,17 @@ AIC group 2: 229,073.2
 AIC group 3: 152,975.1  
 
 **Splines for Group 1: ages 18 -49**  
+
 ![Splines for Group 1: ages 18 -49](G1_2m_lag_splines.png)
 
 
 **Splines for Group 2: ages 50-64**  
+
 ![Splines for Group 2: ages 50-64](G2_2m_lag_splines.png)
 
 
 **Splines for Group 3: ages 65+**  
+
 ![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
 
 ## Models Stratified by Age Group, with Interaction Term
@@ -313,12 +325,15 @@ AIC group 3: 152,749
 
 
 **Splines for Group 1: ages 18 -49**  
+
 ![Splines for Group 1: ages 18 -49](g1_no_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
+
 ![Splines for Group 2: ages 50-64](g2_no_lag_int.png)
 
-**Splines for Group 3: ages 65+**      
+**Splines for Group 3: ages 65+**   
+
 ![Splines for Group 3: ages 65+](g3_no_lag_int.png) 
 
 ---
@@ -372,17 +387,16 @@ AIC group 3: 152,743.3
 
 
 **Splines for Group 1: ages 18 -49**  
-![Splines for Group 1: ages 18 -49](g1_1m_lag_int_1.png)
-![Splines for Group 1: ages 18 -49](g1_1m_int_2.png)
+
+![Splines for Group 1: ages 18 -49](g1_1m_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
-![Splines for Group 2: ages 50-64](g2_1m_lag_int_1.png)
-![Splines for Group 2: ages 50-64](g2_1m_lag_int_2.png)
 
+![Splines for Group 2: ages 50-64](g2_1m_lag_int.png)
 
 **Splines for Group 3: ages 65+**  
-![Splines for Group 3: ages 65+](g3_1m_lag_int_1.png)  
-![Splines for Group 3: ages 65+](g3_1m_lag_int_2.png)
+
+![Splines for Group 3: ages 65+](g3_1m_lag_int.png)
 
 ---
 
