@@ -29,23 +29,6 @@ brazil_data <- covid_data %>%
   select(date, new_cases, new_deaths, people_vaccinated) %>%
   mutate(date = as.Date(date))
 ```
-
----
-
-## 📈 Figures (load these as something like PNG files in the repo, then reference their location in the repo - examples below)
-
-**Figure 1. Daily New COVID-19 Cases in Brazil**
-
-![Daily Cases](figures/brazil_daily_cases.png)
-
-**Figure 2. Daily New Deaths in Brazil**
-
-![Daily Deaths](figures/brazil_daily_deaths.png)
-
-**Figure 3. Cumulative Vaccinations in Brazil**
-
-![Vaccination Progress](figures/brazil_vaccinations.png)
-
 ---
 
 ## 📝 Summary and Next Steps
@@ -76,10 +59,16 @@ full_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4
 
 ![full_model](Full_model_splines.png)
 
+From this model, we can see that the percent of age group fully vaccinated is generally inversely related to the log-odds of testing positive for COVID-19. By the time a patients’ age group was over 40% vaccinated, their log odds of testing positive became less than 0. 
+
+The spline function for week has a lot of knots and suggests a non-linear relationship between time and test results.
+
+ZIP code population density became positively associated with log-odds of testing positive at 9,000 people per square kilometer. Patients living in ZIP codes with densities ≥9,000 people per square kilometer had positive log-odds of testing positive.
+
 ---
 ## Models Stratified by Age Group
 
-Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
+Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)  
 Models contain all variables from the final model, where percent vaccinated and week are separate variables (no interaction term)
 
 Percent vaccinated has not been lagged by any time.
@@ -449,17 +438,17 @@ AIC group 3: 152,769.3
 
 
 **Splines for Group 1: ages 18 -49**  
-![Splines for Group 1: ages 18 -49](g1_2m_lag_int_1.png)
-![Splines for Group 1: ages 18 -49](g1_2m_lag_int_2.png)
+
+![Splines for Group 1: ages 18 -49](g1_2m_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
-![Splines for Group 2: ages 50-64](g2_2m_lag_int_1.png)
-![Splines for Group 2: ages 50-64](g2_2m_lag_int_2.png)
 
+![Splines for Group 2: ages 50-64](g2_2m_lag_int.png)
 
 **Splines for Group 3: ages 65+**  
-![Splines for Group 3: ages 65+](g3_2m_lag_int_1.png)  
-![Splines for Group 3: ages 65+](g3_2m_lag_int_2.png)
+
+![Splines for Group 3: ages 65+](g3_2m_lag_int.png)  
+
 
 ---
 
