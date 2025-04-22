@@ -58,6 +58,15 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 Let’s keep building out the analysis and document all updates right here in this repo!
 
 ---
+## Main Model
+
+Time Period: March 2020 - November 2021
+Percent vaccinated and time are two separate variables and not included in an interaction term. 
+
+```r
+
+
+---
 ## Models Stratified by Age Group
 
 Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
@@ -257,7 +266,7 @@ Percent vaccinated has not been lagged by any time.
 **Models:**
 ```r
 group1_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
-                            + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                           
                             +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                             +s(Percent_over_65, k = -1, bs = "ts") 
                             +s(PopDens, k=-1, bs = "ts") 
@@ -267,7 +276,7 @@ group1_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group1_int))
 
 group2_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                          + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")              
                           +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                           +s(Percent_over_65, k = -1, bs = "ts") 
                           +s(PopDens, k=-1, bs = "ts") 
@@ -277,7 +286,7 @@ group2_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group2_int))
 
 group3_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                           + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                         
                            +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                            +s(Percent_over_65, k = -1, bs = "ts") 
                            +s(PopDens, k=-1, bs = "ts") 
@@ -320,7 +329,7 @@ Percent vaccinated is lagged by 1 month.
 **Models:**
 ```r
 group1_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
-                  + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                  + s(Week, Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts")            
                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                   +s(Percent_over_65, k = -1, bs = "ts") 
                   +s(PopDens, k=-1, bs = "ts") 
@@ -330,7 +339,7 @@ group1_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group1_1m_int))
 
 group2_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                  + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                  + s(Week, Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts")                       
                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                   +s(Percent_over_65, k = -1, bs = "ts") 
                   +s(PopDens, k=-1, bs = "ts") 
@@ -340,7 +349,7 @@ group2_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group2_1m_int))
 
 group3_1m_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                   + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                   + s(Week, Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts")                        
                    +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                    +s(Percent_over_65, k = -1, bs = "ts") 
                    +s(PopDens, k=-1, bs = "ts") 
@@ -383,7 +392,7 @@ Percent vaccinated has been lagged by 2 months.
 **Models:**
 ```r
 group1_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
-                  + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                  + s(Week, Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts")                      
                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                   +s(Percent_over_65, k = -1, bs = "ts") 
                   +s(PopDens, k=-1, bs = "ts") 
@@ -393,7 +402,7 @@ group1_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group1_2m_int))
 
 group2_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                  + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                  + s(Week, Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts")                           
                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                   +s(Percent_over_65, k = -1, bs = "ts") 
                   +s(PopDens, k=-1, bs = "ts") 
@@ -403,7 +412,7 @@ group2_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group2_2m_int))
 
 group3_2m_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                   + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                   + s(Week, Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts")                           
                    +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                    +s(Percent_over_65, k = -1, bs = "ts") 
                    +s(PopDens, k=-1, bs = "ts") 
