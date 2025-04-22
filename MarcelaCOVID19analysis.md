@@ -64,7 +64,14 @@ Time Period: March 2020 - November 2021
 Percent vaccinated and time are two separate variables and not included in an interaction term. 
 
 ```r
-
+full_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                        s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                      + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
+                      + s(Percent_over_65, k = -1, bs = "ts")
+                      + s(Longitude, Latitude, k = -1, bs = "sos"),
+                      family = binomial, data = Pre_omicron_2m_lag, 
+                      method="fREML", select = TRUE, gamma = 1.4, nthreads=8)   
+```
 
 ---
 ## Models Stratified by Age Group
@@ -306,17 +313,13 @@ AIC group 3: 152,749
 
 
 **Splines for Group 1: ages 18 -49**  
-![Splines for Group 1: ages 18 -49](g1_no_lag_int_1.png)
-![Splines for Group 1: ages 18 -49](g1_no_lag_int_2.png)
+![Splines for Group 1: ages 18 -49](g1_no_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
-![Splines for Group 2: ages 50-64](g2_no_lag_int_1.png)
-![Splines for Group 2: ages 50-64](g2_no_lag_int_2.png)
+![Splines for Group 2: ages 50-64](g2_no_lag_int.png)
 
-
-**Splines for Group 3: ages 65+**  
-![Splines for Group 3: ages 65+](g3_no_int_1.png)  
-![Splines for Group 3: ages 65+](g3_no_lag_int_2.png)
+**Splines for Group 3: ages 65+**      
+![Splines for Group 3: ages 65+](g3_no_lag_int.png) 
 
 ---
 
