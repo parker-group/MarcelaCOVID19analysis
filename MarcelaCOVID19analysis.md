@@ -58,13 +58,16 @@ From the figures above, we can see that Brazil experienced several waves of COVI
 Let’s keep building out the analysis and document all updates right here in this repo!
 
 ---
-
-## Age Stratified Models with 2-month Lag (real-time and 1-month lag coming soon!) 
+## Models Stratified by Age Group
 
 Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
+Models contain all variables from the final model, where percent vaccinated and week are separate variables (no interaction term)
 
+Percent vaccinated has not been lagged by any time.
+
+**Filtering by age group:**
 ```r
-#Filtering main dataset into 3 groups
+#Filtering main dataset (named Pre_omicron_2m_lag) into 3 groups
 Group1 <- Pre_omicron_2m_lag %>% 
   filter(Age >= 18 & Age <= 49)
 
@@ -75,7 +78,126 @@ Group3 <- Pre_omicron_2m_lag %>%
   filter(Age >= 65)
 ```
 
-Models
+**Models:**
+```r
+#Group 1
+group1_pre_omicron =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                              s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                            + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
+                            + s(Percent_over_65, k = -1, bs = "ts")
+                            + s(Longitude, Latitude, k = -1, bs = "sos"),
+                            family = binomial, data = Group1, 
+                            method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_pre_omicron))
+AIC(group1_pre_omicron)
+
+#Group 2
+group2_pre_omicron =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                              s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                            + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
+                            + s(Percent_over_65, k = -1, bs = "ts")
+                            + s(Longitude, Latitude, k = -1, bs = "sos"),
+                            family = binomial, data = Group2, 
+                            method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_pre_omicron))
+AIC(group2_pre_omicron)
+
+group3_pre_omicron =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                               s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                             + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
+                             + s(Percent_over_65, k = -1, bs = "ts")
+                             + s(Longitude, Latitude, k = -1, bs = "sos"),
+                             family = binomial, data = Group3, 
+                             method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_pre_omicron))
+AIC(group3_pre_omicron)
+```
+
+AIC group 1: 589,230   
+AIC group 2: 229,137.2  
+AIC group 3: 153,026.1  
+
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](g1_no_lag.png)
+
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](g2_no_lag.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](g3_no_lag.png)
+
+---
+
+## Models Stratified by Age Group, Lagged by 1 month
+
+Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
+They contain all variables from the final model, where percent vaccinated and week are separate variables (no interaction term)
+
+Percent vaccinated has been lagged by 1 month
+
+**Models:**
+```r
+#Group 1
+group1_1m_lag =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                            s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                          + s(Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts") 
+                          + s(Percent_over_65, k = -1, bs = "ts")
+                          + s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group1, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_1m_lag))
+AIC(group1_1m_lag)
+
+#Group 2
+group2_1m_lag =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                            s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                          + s(Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts") 
+                          + s(Percent_over_65, k = -1, bs = "ts")
+                          + s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group2, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_1m_lag))
+AIC(group2_1m_lag)
+
+#Group 3
+group3_1m_lag =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                             s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                           + s(Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts") 
+                           + s(Percent_over_65, k = -1, bs = "ts")
+                           + s(Longitude, Latitude, k = -1, bs = "sos"),
+                           family = binomial, data = Group3, 
+                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_1m_lag))
+AIC(group3_1m_lag)
+```
+
+AIC group 1: 589,013.9  
+AIC group 2: 229,045.9  
+AIC group 3: 152,956.1  
+
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](g1_1m_lag.png)
+
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](g2_1m_lag.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](g3_1m_lag.png)
+
+---
+
+## Age Stratified Models, Lagged by 2 months
+
+Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
+They contain all variables from the final model, where percent vaccinated and week are separate variables (no interaction term)
+
+Percent vaccinated has been lagged by 2 months
+
+**Models**
 ```r
 #Group 1
 group1_2m_lag =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
@@ -109,181 +231,12 @@ group3_2m_lag =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_
                            method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
 print(summary(group3_2m_lag))
 AIC(group3_2m_lag)
-beep(sound=2)
 ```
 
 AIC group 1: 589,185.9  
 AIC group 2: 229,073.2  
 AIC group 3: 152,975.1  
 
-**Code for Figures**
-
-```r
-par(mfrow = c(2, 3),        # 2 rows, 3 columns
-    mar   = c(4, 4, 2, 1),
-    cex.main = 0.8,
-    cex.lab = 0.8)
-
-plot(group1_2m_lag, select = 4, 
-     xlab = "% of Group Fully Vaccinated",
-     ylab = "s(% of Group Fully Vaccinated)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "% of Group Fully Vaccinated, 2m lag",
-     ylim = c(-5, 5)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group1_2m_lag, select = 3,
-     xlab = "Week", 
-     ylab = "s(Week)",
-     shade = TRUE,
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Week", 
-     ylim = c(-5, 5))
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group1_2m_lag, select = 1, 
-     xlab = "% of households with ≥4 members",
-     ylab = "s(Percent of households)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "% of households in ZIP with ≥4 members", 
-     ylim = c(-0.6,0.6)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group1_2m_lag, select = 5, 
-     xlab = "Proportion of ZIP over 65",
-     ylab = "s(Proportion of ZIP over 65)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Proportion of ZIP code older than 65",
-     ylim = c(-0.02, 0.02)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group1_2m_lag, select = 2, 
-     xlab = "Population Density",
-     ylab = "s(Population Density)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "ZIP Code Population Density",
-     ylim = c(-0.2, 0.25)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group1_2m_lag, select = 6, scheme =4)
-
-#Figures for Group 2 
-
-plot(group2_2m_lag, select = 4, 
-     xlab = "% of Group Fully Vaccinated",
-     ylab = "s(% of Group Fully Vaccinated)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "% of Group Fully Vaccinated, 2m lag",
-     ylim = c(-5, 5)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group2_2m_lag, select = 3,
-     xlab = "Week", 
-     ylab = "s(Week)",
-     shade = TRUE,
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Week", 
-     ylim = c(-5, 5))
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group2_2m_lag, select = 1, 
-     xlab = "% of households with ≥4 members",
-     ylab = "s(Percent of households)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Percent of households in ZIP with ≥4 members", 
-     ylim = c(-0.75,0.6)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group2_2m_lag, select = 5, 
-     xlab = "Proportion of ZIP over 65",
-     ylab = "s(Proportion of ZIP over 65)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Proportion of ZIP code older than 65",
-     ylim = c(-0.7, 0.7)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group2_2m_lag, select = 2, 
-     xlab = "Population Density",
-     ylab = "s(Population Density)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "ZIP Code Population Density",
-     ylim = c(-0.005, 0.005)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group2_2m_lag, select = 6, scheme =4)
-
-#Figures for Group 3 
-
-plot(group3_2m_lag, select = 4, 
-     xlab = "% of Group Fully Vaccinated",
-     ylab = "s(% of Group Fully Vaccinated)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "% of Group Fully Vaccinated, 2m lag",
-     ylim = c(-5, 6)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group3_2m_lag, select = 3,
-     xlab = "Week", 
-     ylab = "s(Week)",
-     shade = TRUE,
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Week", 
-     ylim = c(-6, 6))
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group3_2m_lag, select = 1, 
-     xlab = "% of households with ≥4 members",
-     ylab = "s(% of households)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "% of households in ZIP with ≥4 members", 
-     ylim = c(-0.75,0.75)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group3_2m_lag, select = 2, 
-     xlab = "Population Density",
-     ylab = "s(Population Density)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "ZIP Code Population Density",
-     ylim = c(-0.3, 0.3)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group3_2m_lag, select = 5, 
-     xlab = "Proportion of ZIP over 65",
-     ylab = "s(Proportion of ZIP over 65)",
-     shade = TRUE, 
-     shade.col = "#E6F3FF", 
-     rug = TRUE, 
-     main = "Proportion of ZIP code older than 65",
-     ylim = c(-1.2, 0.6)) 
-abline(h = 0, lty = 2, col = "gray")
-
-plot(group3_2m_lag, select = 6, scheme = 4)
-```
 **Splines for Group 1: ages 18 -49**  
 ![Splines for Group 1: ages 18 -49](G1_2m_lag_splines.png)
 
@@ -294,3 +247,193 @@ plot(group3_2m_lag, select = 6, scheme = 4)
 
 **Splines for Group 3: ages 65+**  
 ![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
+
+## Models Stratified by Age Group, with Interaction Term
+
+Includes entire time period (March 2020 - November 2021)
+Models contain all variables from the final model, except that percent vaccinated and week are included as one interaction term. 
+Percent vaccinated has not been lagged by any time.
+
+**Models:**
+```r
+group1_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
+                            + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                            +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                            +s(Percent_over_65, k = -1, bs = "ts") 
+                            +s(PopDens, k=-1, bs = "ts") 
+                           +s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group1, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_int))
+
+group2_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                          + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                          +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                          +s(Percent_over_65, k = -1, bs = "ts") 
+                          +s(PopDens, k=-1, bs = "ts") 
+                          +s(Longitude, Latitude, k = -1, bs = "sos"),
+                          family = binomial, data = Group2, 
+                          method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_int))
+
+group3_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                           + s(Percent_of_age_group_fully_vaccinated, Week, k=-1, bs = "ts")                           
+                           +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                           +s(Percent_over_65, k = -1, bs = "ts") 
+                           +s(PopDens, k=-1, bs = "ts") 
+                           +s(Longitude, Latitude, k = -1, bs = "sos"),
+                           family = binomial, data = Group3, 
+                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_int))
+
+AIC(group1_int)
+AIC(group2_int)
+AIC(group3_int)
+```
+
+AIC group 1: 588,278.9   
+AIC group 2: 228,726.1  
+AIC group 3: 152,749  
+
+
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](g1_no_lag_int_1.png)
+![Splines for Group 1: ages 18 -49](g1_no_lag_int_2.png)
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](g2_no_lag_int_1.png)
+![Splines for Group 2: ages 50-64](g2_no_lag_int_2.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](g3_no_int_1.png)  
+![Splines for Group 3: ages 65+](g3_no_lag_int_2.png)
+
+---
+
+## Models Stratified by Age Group, with Interaction Term and 1-Month Lag
+
+Includes entire time period (March 2020 - November 2021)
+Models contain all variables from the final model, except that percent vaccinated and week are included as one interaction term. 
+Percent vaccinated is lagged by 1 month.
+
+**Models:**
+```r
+group1_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
+                  + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                  +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                  +s(Percent_over_65, k = -1, bs = "ts") 
+                  +s(PopDens, k=-1, bs = "ts") 
+                  +s(Longitude, Latitude, k = -1, bs = "sos"),
+                  family = binomial, data = Group1, 
+                  method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_1m_int))
+
+group2_1m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                  + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                  +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                  +s(Percent_over_65, k = -1, bs = "ts") 
+                  +s(PopDens, k=-1, bs = "ts") 
+                  +s(Longitude, Latitude, k = -1, bs = "sos"),
+                  family = binomial, data = Group2, 
+                  method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_1m_int))
+
+group3_1m_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                   + s(Percent_agegroup_fully_vaxxed_1ml, Week, k=-1, bs = "ts")                           
+                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                   +s(Percent_over_65, k = -1, bs = "ts") 
+                   +s(PopDens, k=-1, bs = "ts") 
+                   +s(Longitude, Latitude, k = -1, bs = "sos"),
+                   family = binomial, data = Group3, 
+                   method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_1m_int))
+
+AIC(group1_1m_int)
+AIC(group2_1m_int)
+AIC(group3_1m_int)
+```
+
+AIC group 1: 588,401.4    
+AIC group 2: 228,764.8  
+AIC group 3: 152,743.3  
+
+
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](g1_1m_lag_int_1.png)
+![Splines for Group 1: ages 18 -49](g1_1m_int_2.png)
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](g2_1m_lag_int_1.png)
+![Splines for Group 2: ages 50-64](g2_1m_lag_int_2.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](g3_1m_lag_int_1.png)  
+![Splines for Group 3: ages 65+](g3_1m_lag_int_2.png)
+
+---
+
+## Models Stratified by Age Group, with Interaction Term and 2-Month Lag
+
+Includes entire time period (March 2020 - November 2021)
+Models contain all variables from the final model, except that percent vaccinated and week are included as one interaction term. 
+Percent vaccinated has been lagged by 2 months.
+
+**Models:**
+```r
+group1_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
+                  + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                  +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                  +s(Percent_over_65, k = -1, bs = "ts") 
+                  +s(PopDens, k=-1, bs = "ts") 
+                  +s(Longitude, Latitude, k = -1, bs = "sos"),
+                  family = binomial, data = Group1, 
+                  method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group1_2m_int))
+
+group2_2m_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                  + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                  +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                  +s(Percent_over_65, k = -1, bs = "ts") 
+                  +s(PopDens, k=-1, bs = "ts") 
+                  +s(Longitude, Latitude, k = -1, bs = "sos"),
+                  family = binomial, data = Group2, 
+                  method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group2_2m_int))
+
+group3_2m_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
+                   + s(Percent_agegroup_fully_vaxxed_2ml, Week, k=-1, bs = "ts")                           
+                   +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                   +s(Percent_over_65, k = -1, bs = "ts") 
+                   +s(PopDens, k=-1, bs = "ts") 
+                   +s(Longitude, Latitude, k = -1, bs = "sos"),
+                   family = binomial, data = Group3, 
+                   method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(group3_2m_int))
+
+AIC(group1_2m_int)
+AIC(group2_2m_int)
+AIC(group3_2m_int)
+```
+
+AIC group 1: 588,417.5    
+AIC group 2: 228,793.5  
+AIC group 3: 152,769.3  
+
+
+**Splines for Group 1: ages 18 -49**  
+![Splines for Group 1: ages 18 -49](g1_2m_lag_int_1.png)
+![Splines for Group 1: ages 18 -49](g1_2m_lag_int_2.png)
+
+**Splines for Group 2: ages 50-64**  
+![Splines for Group 2: ages 50-64](g2_2m_lag_int_1.png)
+![Splines for Group 2: ages 50-64](g2_2m_lag_int_2.png)
+
+
+**Splines for Group 3: ages 65+**  
+![Splines for Group 3: ages 65+](g3_2m_lag_int_1.png)  
+![Splines for Group 3: ages 65+](g3_2m_lag_int_2.png)
+
+---
+
