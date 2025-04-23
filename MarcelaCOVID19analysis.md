@@ -52,7 +52,7 @@ full_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4
                       + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
                       + s(Percent_over_65, k = -1, bs = "ts")
                       + s(Longitude, Latitude, k = -1, bs = "sos"),
-                      family = binomial, data = Pre_omicron_2m_lag, 
+                      family = binomial, data = Final_dataset, 
                       method="fREML", select = TRUE, gamma = 1.4, nthreads=8)   
 ```
 **Splines for Main Model**  
@@ -63,7 +63,12 @@ From this model, we can see that the percent of age group fully vaccinated is ge
 
 The spline function for week has a lot of knots and suggests a non-linear relationship between time and test results.
 
+The downward trend observed with the spline for percent of households with ≥4 members is something that may specifically be driven by the <50 population, as the spline for the full model most closely resembles the spline for the same variable for the 18-49 age group. 
+
+The spline for percent of ZIP code over the age of 65 has a confidence band that widens as percentage increases. Looking at the rug plot, this makese sense as there are less observations with increased percentage. The general downward trend matches the oldest age groups' decreased odds of testing positive, compared to the youngest age group. However, the confidence band includes 0 for most percentages.
+
 ZIP code population density became positively associated with log-odds of testing positive at 9,000 people per square kilometer. Patients living in ZIP codes with densities ≥9,000 people per square kilometer had positive log-odds of testing positive.
+
 
 ---
 ## Models Stratified by Age Group
@@ -75,14 +80,14 @@ Percent vaccinated has not been lagged by any time.
 
 **Filtering by age group:**
 ```r
-#Filtering main dataset (named Pre_omicron_2m_lag) into 3 groups
-Group1 <- Pre_omicron_2m_lag %>% 
+#Filtering main dataset (named Final_dataset) into 3 groups
+Group1 <- Final_dataset %>% 
   filter(Age >= 18 & Age <= 49)
 
-Group2 <- Pre_omicron_2m_lag %>% 
+Group2 <- Final_dataset %>% 
   filter(Age >= 50 & Age <= 64)
 
-Group3 <- Pre_omicron_2m_lag %>% 
+Group3 <- Final_dataset %>% 
   filter(Age >= 65)
 ```
 
@@ -139,9 +144,41 @@ AIC group 3: 153,026.1
 
 ![Splines for Group 3: ages 65+](g3_no_lag.png)
 
+After correcting the time period to include all samples from March 2020 - November 2021, the spline functions for all three age groups display similar downward trends with increasing percentage of vaccination, with coefficients ranging from 6 to -6. This downward trends is similar to the one from the full model shown above. We are no longer seeing an uptick at the end. 
+
+For age group 1 (18-49), the spline function crosses zero at around 35%. For age group 2 (50-64%), the spline crosses zero at around 40-45%. For the eldest age group (65+), it crosses zero at around 75%. 
+
+After discussing these findings with Tanya on Tuesday, 4.22., I'd like to explore the following question: 
+*Do these percentages reflect the same period or did these groups reach these percentages at different times?* If the former, then these splines reflect a county-wide tipping point, at which all groups became protected. If the latter is true, then different age groups became protected earlier than others, reflecting potential behavioral differences or consequences of staggered vaccine administration. 
+
+The splines for percent of households with ≥4 members differ slightly by age. While all three groups show a general upward trend, the spline for the first age group drops down again towards the end.  For two older age groups (50-64 and 65+), the splines start at around -0.5 and cross zero at around 30%. Therefore, we can conclude that OC residents living in ZIP codes where >30% of households at 4 or more members had increased odds of testing positive for COVID-19. 
+
+The splines for proportion of ZIP code over the age of 65 and for ZIP code population density hover at around 0. Confidence bands include 0 for large sections
+
+---
+## Full Model with Vaccination Coverage Lagged by 1 month
+Time period: March 2020 - November 2020  
+Includes all variables from full model, except vaccination coverage has been lagged by 1 month. Model does not include the original vaccination coverage variable nor the 2-month lagged variable. 
+```r
+bam_1_month_lag = bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                             s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                           + s(Percent_agegroup_fully_vaxxed_1ml, k=-1, bs = "ts") 
+                           + s(Percent_over_65, k = -1, bs = "ts")
+                           + s(Longitude, Latitude, k = -1, bs = "sos"),
+                           family = binomial, data = Final_dataset, 
+                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(bam_1_month_lag))
+AIC(bam_1_month_lag)
+
+```
+AIC: 976,608.1
+
+**Splines for full model lagged by 1 month**
+![Splines for 1 month lag](bam_1_month_lag.png)
+
 ---
 
-## Models Stratified by Age Group, Lagged by 1 month
+## Models Stratified by Age Group, Vaccination Coverage Lagged by 1 month
 
 Fixed on 04.16.2025 to include entire time period (March 2020 - November 2021)
 They contain all variables from the final model, where percent vaccinated and week are separate variables (no interaction term)
@@ -202,7 +239,33 @@ AIC group 3: 152,956.1
 
 ![Splines for Group 3: ages 65+](g3_1m_lag.png)
 
+When delaying vaccination coverage by a month, the spline functions for vaccination coverage for all three age group shifted over to the left, with the splines crossing zero at 15%, 15%, and 65% respectively. As a check to the question posed underneath the non-lagged age-stratified spline functions, it will be good to check whether these percentages also line up with the same time period.
+
+Of note, all three splines for vaccination coverage inflect upward at 50%, 60%, and 80%. 
+
 ---
+
+## Full Model with Vaccination Coverage Lagged by 2 months
+
+Time period: March 2020 - November 2020  
+Includes all variables from full model, except vaccination coverage has been lagged by 2 months. Model does not include the original vaccination coverage variable nor the 1-month lagged variable. 
+
+```r
+bam_2_month_lag = bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
+                        s(PopDens, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
+                      + s(Percent_agegroup_fully_vaxxed_2ml, k=-1, bs = "ts") 
+                      + s(Percent_over_65, k = -1, bs = "ts")
+                      + s(Longitude, Latitude, k = -1, bs = "sos"),
+                      family = binomial, data = Final_dataset, 
+                      method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+print(summary(bam_2_month_lag))
+AIC(bam_2_month_lag)
+```
+AIC: 976,764.3
+
+**Splines for full model lagged by 2 months**
+![Splines for 2 month lag](bam_2_month_lag.png)
+
 
 ## Age Stratified Models, Lagged by 2 months
 
@@ -265,6 +328,7 @@ AIC group 3: 152,975.1
 
 ![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
 
+
 ## Models Stratified by Age Group, with Interaction Term
 
 Includes entire time period (March 2020 - November 2021)
@@ -274,7 +338,7 @@ Percent vaccinated has not been lagged by any time.
 **Models:**
 ```r
 group1_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
-                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                           
+                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                     
                             +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                             +s(Percent_over_65, k = -1, bs = "ts") 
                             +s(PopDens, k=-1, bs = "ts") 
@@ -294,7 +358,7 @@ group2_int =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity
 print(summary(group2_int))
 
 group3_int =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity                             
-                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                         
+                           + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")                     
                            +s(Percent_hh_4_or_more, k=-1, bs = "ts") 
                            +s(Percent_over_65, k = -1, bs = "ts") 
                            +s(PopDens, k=-1, bs = "ts") 
