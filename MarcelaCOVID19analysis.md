@@ -328,10 +328,34 @@ AIC group 3: 152,975.1
 
 ![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
 
+---
+
+## Full Model with Interaction Term
+
+Time period: March 2020 - November 2020  
+Models contain all variables from the final model, except that percent vaccinated and week are included as one interaction term. 
+
+```r
+interaction_only =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity  
+                        + s(Week, Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts")
+                        + s(Percent_hh_4_or_more, k=-1, bs = "ts") 
+                        + s(Percent_over_65, k = -1, bs = "ts")
+                        + s(PopDens, k=-1, bs = "ts") 
+                        + s(Longitude, Latitude, k = -1, bs = "sos"),
+                        family = binomial, data = Final_dataset, 
+                        method="fREML", select = TRUE, gamma = 1.4, nthreads=8)   
+summary(interaction_only)
+AIC(interaction_only)
+```
+AIC: 975,214.5
+
+**Splines for full model with interaction term**
+![Interaction_only_splines](interaction_only_splines.png)
+
 
 ## Models Stratified by Age Group, with Interaction Term
 
-Includes entire time period (March 2020 - November 2021)
+Time period (March 2020 - November 2021)
 Models contain all variables from the final model, except that percent vaccinated and week are included as one interaction term. 
 Percent vaccinated has not been lagged by any time.
 
