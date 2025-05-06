@@ -66,7 +66,7 @@ The following figure is an attempt to synthesize as much information as possible
 
 ![Total_positive_counts_lines](total_positive_counts_lines.png)
 ![Total_and_positive_tests_hist](Total_and_positive_tests_hist.png)
-![case_counts_rolling_average](case_counts_rolling_average.png)
+![rolling_average](Rolling_average.png)
 
 ![Vaccination_coverage](Vaccination_coverage.png)
 
