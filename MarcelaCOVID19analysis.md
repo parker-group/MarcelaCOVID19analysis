@@ -30,6 +30,27 @@ brazil_data <- covid_data %>%
   mutate(date = as.Date(date))
 ```
 ---
+## Conference Abstract 
+
+*As of 05.03.2025* 
+
+**Title:** Demographic Disparities and Vaccine Coverage: Predictors of SARS-CoV-2 Test Positivity in Orange County, California   
+
+**Authors:** Marcela Lopez, Tetyana I. Vasylyeva, Daniel M. Parker  
+
+**Background:** COVID-19, caused by the severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2), was declared a pandemic in March 2020. Vaccines against SARS-CoV-2 became available to residents in Orange County, California, in phases starting in December 2020. Previous work has identified gender, age, race, and place of residence as potential risk factors for infection.   
+
+**Objective:** Using surveillance data, vaccination rates, and Census data, we assessed how demographic risk factors, neighborhood characteristics, and vaccination coverage influenced odds of SARS-CoV-2 infection in Orange County. We expected men, racially minoritized individuals, and individuals living in communities with greater population density to have higher odds of testing positive for COVID-19.   
+
+**Methods:** We linked daily reported test records collated by the Orange County Health Care Agency from March 2020 to November 2021 with SARS-CoV-2 vaccination data from the California Open Data Portal and ZIP-code-level attributes from the U.S. Census Bureau (n=1,799,693). We fit generalized additive models with binomial family distributions to model test positivity as a function of individuals’ gender, age, race/ethnicity, ZIP-code population density, ZIP-code household density, the proportion of residents aged ≥65 years in each ZIP code, and age-group-specific vaccination rates – while accounting for time and location (ZIP-code geographic centroids).   
+
+**Results:** Men had 12% increased odds of testing positive for COVID-19 compared to women (aOR: 1.12; 95% CI: 1.11, 1.13). Hispanic/Latinx individuals had over twice the odds of infection compared to Non-Hispanic White individuals (aOR: 2.19; 95% CI: 2.16, 2.22).  Those aged 80-100 years had 30% decreased odds compared to those aged 18-24 (aOR: 0.70; 95% CI: 0.68-0.72). We found an inverse relationship between test positivity and proportion of the age group vaccinated, with decreased odds of an individual testing positive after approximately 40% of their respective age group had been vaccinated. Age-stratified analyses indicated that this protective effect differed by age group, with those <65 seeing protective effects earlier than those ≥65.  
+
+**Discussion:** Male sex and Hispanic/Latinx ethnicity were risk factors for COVID-19 infection. Even relatively moderate levels of vaccination coverage could be indirectly protective against infection. Despite earlier vaccination access, adults over 65 saw delayed protective effects, suggesting age-related differences in herd immunity.  
+
+*350 words, excluding authors and titles*
+
+---
 
 ## 📊 Figures
 
