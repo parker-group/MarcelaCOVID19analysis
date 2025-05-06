@@ -31,14 +31,24 @@ brazil_data <- covid_data %>%
 ```
 ---
 
-## 📝 Summary and Next Steps
+## 📊 Figures
 
-From the figures above, we can see that Brazil experienced several waves of COVID-19 cases, with peaks aligning with increased mortality. Vaccination efforts ramped up in mid-2021, which correspond to a decline in case fatality rates.
+The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
 
-**Next steps for Marcela:**
-...
+![full_figure](05.05.2025.jpg)
 
-Let’s keep building out the analysis and document all updates right here in this repo!
+Note: it's currently a little tricky to see.
+
+**Previous iterations of the three levels shown above**
+
+
+![Total_positive_counts_lines](total_positive_counts_lines.png)
+![Total_and_positive_tests_hist](Total_and_positive_tests_hist.png)
+![case_counts_rolling_average](case_counts_rolling_average.png)
+
+![Vaccination_coverage](Vaccination_coverage.png)
+
+![Vaccine_protective](vaccine_coverage_protective.png)
 
 ---
 ## Full Model
