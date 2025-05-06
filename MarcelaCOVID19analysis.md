@@ -35,9 +35,10 @@ brazil_data <- covid_data %>%
 
 The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
 
-![full_figure](05.05.2025.jpg)
+![full_figure](Three_level_figure.png)
 
-Note: it's currently a little tricky to see.
+
+
 
 **Previous iterations of the three levels shown above**
 
