@@ -54,23 +54,21 @@ brazil_data <- covid_data %>%
 
 ## 📊 Figures
 
+**Forest Plots for Final Model**
+Version 1   
+
+![Forest_plot_A]{Forest_plot_3.png)  
+
+Version 2
+![Forest_plot_B]{Forest_plot_full_model_2.png)
+
+
+
+ 
 The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
 
 ![full_figure](Three_level_figure.png)
 
-
-
-
-**Previous iterations of the three levels shown above**
-
-
-![Total_positive_counts_lines](total_positive_counts_lines.png)
-![Total_and_positive_tests_hist](Total_and_positive_tests_hist.png)
-![rolling_average](Rolling_average.png)
-
-![Vaccination_coverage](Vaccination_coverage.png)
-
-![Vaccine_protective](vaccine_coverage_protective.png)
 
 ---
 ## Full Model
@@ -571,4 +569,6 @@ AIC group 3: 152,769.3
 
 
 ---
+
+
 
