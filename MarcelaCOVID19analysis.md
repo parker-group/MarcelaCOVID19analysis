@@ -54,16 +54,18 @@ brazil_data <- covid_data %>%
 
 ## 📊 Figures
 
-**Forest Plots for Final Model**
-Version 1   
+### Forest Plot for Full Model
 
-![Forest_plot_A]{Forest_plot_3.png)  
+*Version 1  - square aOR with no vertical bars for lower and upper bounds*
 
-Version 2
-![Forest_plot_B]{Forest_plot_full_model_2.png)
+![Forest_plot_A](Forest_plot_3.png)  
+
+*Version 2  - cicle aOr with with vertical bars at lower and upper bounds*
+
+![Forest_plot_B](Forest_plot_full_model_2.png)
 
 
-
+### Pandemic Timeline
  
 The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
 
