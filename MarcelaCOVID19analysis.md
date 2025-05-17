@@ -65,6 +65,21 @@ brazil_data <- covid_data %>%
 ![Forest_plot_B](Forest_plot_full_model_2.png)
 
 
+### Updated Pandemic Timeline Figure - Vaccine Coverage Plot
+
+*Version 1 - Dashed line where spline crossed 0*  
+
+![Plot2A](Plot2_dashed.png)  
+
+*Version 2 - Dashed lines where confidence band crossed 0*  
+
+![Plot2B](Plot2_CI_dashed.png)  
+
+*Version 3 - Color bands where confidence band crossed 0*
+
+![Plot2C](Plot2_bands.png)
+
+
 ### Pandemic Timeline
  
 The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
