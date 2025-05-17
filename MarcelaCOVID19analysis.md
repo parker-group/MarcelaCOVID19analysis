@@ -67,15 +67,19 @@ brazil_data <- covid_data %>%
 
 ### Updated Pandemic Timeline Figure - Vaccine Coverage Plot
 
-*Version 1 - Dashed line where spline crossed 0*  
+*Version 1 - Points where splines crossed 0*  
+
+![Plot2](Plot2_singular_point.png)
+
+*Version 2 - Dashed line where spline crossed 0*  
 
 ![Plot2A](Plot2_dashed.png)  
 
-*Version 2 - Dashed lines where confidence band crossed 0*  
+*Version 3 - Dashed lines where confidence band crossed 0*  
 
 ![Plot2B](Plot2_CI_dashed.png)  
 
-*Version 3 - Color bands where confidence band crossed 0*
+*Version 4 - Color bands where confidence band crossed 0*
 
 ![Plot2C](Plot2_bands.png)
 
