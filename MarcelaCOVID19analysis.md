@@ -83,6 +83,10 @@ brazil_data <- covid_data %>%
 
 ![Plot2C](Plot2_bands.png)
 
+*Version 5 - Full Version*
+
+![Double_plot](Double_plot.png)
+
 
 ### Pandemic Timeline
  
