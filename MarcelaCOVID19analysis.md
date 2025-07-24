@@ -1,10 +1,7 @@
 # Marcela's COVID-19 Analysis
 
-This project explores trends in COVID-19 cases using publicly available datasets. The primary data sources include:
+This project explores trends in COVID-19 cases using the following datasets. The primary data sources include:
 
-- [Johns Hopkins University COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19)
-- [Our World in Data COVID-19 Dataset](https://github.com/owid/covid-19-data)
-- [CDC COVID Data Tracker](https://covid.cdc.gov/covid-data-tracker)
 - [update and add your own]
 
 These sources provide daily updates on cases, testing, and vaccination metrics across OC.
@@ -20,15 +17,150 @@ Below is an example R script used to load and clean the dataset for analysis:
 library(tidyverse)
 library(lubridate)
 
-# Load data from Our World in Data
-covid_data <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
-
-# Filter for a specific country (e.g., Brazil)
-brazil_data <- covid_data %>%
-  filter(location == "Brazil") %>%
-  select(date, new_cases, new_deaths, people_vaccinated) %>%
-  mutate(date = as.Date(date))
 ```
+---
+## Moran's I for test positivity
+Global and local Moran's I tests were run for 4 ZIP-level variables 
+(1-3) Test positivity for three 7-month time periods
+(4) Vaccination coverage by the end of the study period (November 30, 2021)
+
+**Global Moran's I: Explanation and Summary of Resultss**
+- Measures overall spatial autocorrelation across study area
+- Positive values (values >0) indicate that similar values are clustered throughout the entire study area. Negative values indicate dispersion. Value close to zero suggests random spatial pattern.
+- Good for assessing overall pattern of spatial relationships or clustering in the data, but does not provide information on specific locations or local patterns
+-Statistic standard deviate is the standardized measure of Moran's I value; it's a z-score
+- P-value tests null hypothesis that there is no spatial autocorrelation. Values below alpha (0.05) indicate strong evidence against null hypothesis (presence on spatial autocorrelation, not likely due to chance)
+- The alternative hypothesis tested was that the observed Moran's I value is greater than what would be expected under random spatial distribution
+ 
+*Results Summary:*
+- Statistically significant strong positive spatial autocorrelation for test positivity for the first two time period (strong tendency for similar values to be clustered together)
+- Moran's I drops a bit for the third time period, suggesting a lower degree of clustering (moderately positive spatial autocorrelation)
+- Statistically significant moderate positive spatial autocorrelation for vaccination coverage as of November 30, 2021.
+- Positive spatial autocorrelation (values >0) for all four variables suggest that similar values for test positivity/coverage are more likely to found near each other geographically.
+
+**Local Moran's I Explanation:** 
+- Also referred to as Local Spatial Autocorrelation (LISA)
+- Measures spatial autocorrelation in specific locations and identifies hotspots, cold spots, and spatial outliers
+- One statistic per feature (ZIP code) showing where high or low spatial correlations are concentrated. Good for identifying local patterns and clustering
+- High positive values greater than 1 signal clustering of similar values (high-high or low-low clusters). Negative values may indicate spatial outliers.
+
+  
+### Results for Test Posivitity Time Period 1: March 2020 - September 2020 
+Context: Wild-type variant is the dominant strain during this time period. Testing infrastructure developing. Vaccines not available to public yet.
+
+Add image of time period 1 map here 
+
+*Global Moran's I Results*
+Statistic Standard Deviate = 8.0736
+P-value = 3.143e-16
+Alternative Hypothesis: Greater
+Moran I Statistic: 0.52109844
+Expectation: -0.01190476
+Variance: 0.00435839
+
+*Local Moran's I Results*
+
+###Test Posivitity Time Period 2: October 2020 - April 2021
+Context: Alpha variant is dominant during this time period. First large winter wave. Vaccines rolled out to the public during this time period.
+
+Add image of time period 2 map here 
+
+*Global Moran's I Results*
+Statistic Standard Deviate = 8.1653
+P-value < 2.2e-16
+Alternative Hypothesis: Greater
+Moran I Statistic: 0.532781289
+Expectation: -0.011904762
+Variance: 0.00449855
+
+*Local Moran's I Results*
+
+
+### Test Posivitity Time Period 3: May 2021 - November 2021
+Context: Delta variant becomes dominant variant worldwide by June 2021. Vaccines are fully available to public. Ends right before the omicron variant takes over in December 2021.
+
+Add image of time period 3 map here 
+
+*Global Moran's I Results*
+Statistic Standard Deviate = 5.5878
+P-value = 1.15e-08
+Alternative Hypothesis: Greater
+Moran I Statistic: 0.360877725
+Expectation: -0.01190476
+Variance: 0.00445077
+
+*Local Moran's I Results*
+
+
+### Vaccination Coverage by November 30, 2021
+Context: vaccination coverage just before boosters become recommended for all adults 18 and older 
+
+Add vaccination coverage map 
+
+*Global Moran's I Results*
+Statistic Standard Deviate = 3.1215
+P-value = 0.0008998
+Alternative Hypothesis: Greater
+Moran I Statistic: 0.193659383
+Expectation: -0.01190476
+Variance: 0.004336903
+
+*Local Moran's I Results*
+
+
+
+### R Code (spdep package)
+
+```r
+
+#loading in spatial data
+
+geojson_data <- st_read("/Users/marcela/Desktop/Aim 1/JSON_layer.geojson")
+
+#convert to spatial object
+geojson_sp <- as(geojson_data, "Spatial")
+
+#create neighbors
+nb <- poly2nb(geojson_sp)
+
+#create spatial weights
+lw <- nb2listw(nb, style="W")
+
+#GLOBAL
+#Calculate Moran's I for test positivity - time period 1 
+moran_result_P1 <- moran.test(geojson_sp$P1, lw)
+print(moran_result_P1)
+
+#Calculate Moran's I for test positivity - time period 2 
+moran_result_P2 <- moran.test(geojson_sp$P2, lw)
+print(moran_result_P2)
+
+#Calculate Moran's I for test positivity - time period 3 
+moran_result_P3 <- moran.test(geojson_sp$P3, lw)
+print(moran_result_P3)
+
+#Calculate Moran's I for vaccination  
+moran_result_ZIP_vax <- moran.test(geojson_sp$ZIP_vax_Nov_2021, lw)
+print(moran_result_ZIP_vax)
+
+#LOCAL
+
+local_moran_P1_result <- localmoran(geojson_sp$P1, lw)
+geojson_sp$local_moran_P1 <- local_moran_P1_result[, 1]  
+
+local_moran_P2_result <- localmoran(geojson_sp$P2, lw)
+geojson_sp$local_moran_P2 <- local_moran_P2_result[, 1] 
+
+local_moran_P3_result <- localmoran(geojson_sp$P3, lw)
+geojson_sp$local_moran_P3 <- local_moran_P3_result[, 1]  
+
+#Vaccination: 
+local_moran_vax_result <- localmoran(geojson_sp$ZIP_vax_Nov_2021, lw)
+geojson_sp$local_moran_vax <- local_moran_vax_result[, 1] 
+
+```
+
+
 ---
 ## Conference Abstract 
 
