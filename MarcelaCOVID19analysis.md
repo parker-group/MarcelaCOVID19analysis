@@ -48,64 +48,64 @@ Global and local Moran's I tests were run for 4 ZIP-level variables
 ### Results for Test Posivitity Time Period 1: March 2020 - September 2020 
 Context: Wild-type variant is the dominant strain during this time period. Testing infrastructure developing. Vaccines not available to public yet.
 
-Add image of time period 1 map here 
+![TP1](TP1_072325.png)  
 
-*Global Moran's I Results*
-Statistic Standard Deviate = 8.0736
-P-value = 3.143e-16
-Alternative Hypothesis: Greater
-Moran I Statistic: 0.52109844
-Expectation: -0.01190476
-Variance: 0.00435839
+*Global Moran's I Results*  
+Statistic Standard Deviate = 8.0736  
+P-value = 3.143e-16  
+Alternative Hypothesis: Greater  
+Moran I Statistic: 0.52109844  
+Expectation: -0.01190476  
+Variance: 0.00435839  
 
-*Local Moran's I Results*
+![TP1_local](TP1_local.png)  
 
 ###Test Posivitity Time Period 2: October 2020 - April 2021
 Context: Alpha variant is dominant during this time period. First large winter wave. Vaccines rolled out to the public during this time period.
 
-Add image of time period 2 map here 
+![TP2](TP2_072325.png)  
 
-*Global Moran's I Results*
-Statistic Standard Deviate = 8.1653
-P-value < 2.2e-16
-Alternative Hypothesis: Greater
-Moran I Statistic: 0.532781289
-Expectation: -0.011904762
-Variance: 0.00449855
+*Global Moran's I Results*  
+Statistic Standard Deviate = 8.1653  
+P-value < 2.2e-16  
+Alternative Hypothesis: Greater  
+Moran I Statistic: 0.532781289  
+Expectation: -0.011904762  
+Variance: 0.00449855  
 
-*Local Moran's I Results*
+![TP2_local](TP2_local.png)  
 
 
 ### Test Posivitity Time Period 3: May 2021 - November 2021
 Context: Delta variant becomes dominant variant worldwide by June 2021. Vaccines are fully available to public. Ends right before the omicron variant takes over in December 2021.
 
-Add image of time period 3 map here 
+![TP3](TP3_072325.png)  
 
 *Global Moran's I Results*
-Statistic Standard Deviate = 5.5878
-P-value = 1.15e-08
-Alternative Hypothesis: Greater
-Moran I Statistic: 0.360877725
-Expectation: -0.01190476
-Variance: 0.00445077
+Statistic Standard Deviate = 5.5878  
+P-value = 1.15e-08  
+Alternative Hypothesis: Greater  
+Moran I Statistic: 0.360877725  
+Expectation: -0.01190476  
+Variance: 0.00445077  
 
-*Local Moran's I Results*
+![TP3_local](TP3_local.png)  
 
 
 ### Vaccination Coverage by November 30, 2021
 Context: vaccination coverage just before boosters become recommended for all adults 18 and older 
 
-Add vaccination coverage map 
+![Vax_coverage](Vaccination_coverage.png)  
 
-*Global Moran's I Results*
-Statistic Standard Deviate = 3.1215
-P-value = 0.0008998
-Alternative Hypothesis: Greater
-Moran I Statistic: 0.193659383
-Expectation: -0.01190476
-Variance: 0.004336903
+*Global Moran's I Results*  
+Statistic Standard Deviate = 3.1215  
+P-value = 0.0008998  
+Alternative Hypothesis: Greater  
+Moran I Statistic: 0.193659383  
+Expectation: -0.01190476  
+Variance: 0.004336903  
 
-*Local Moran's I Results*
+![Vax_local](Vax_local.png)  
 
 
 
