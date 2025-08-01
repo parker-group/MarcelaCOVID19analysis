@@ -54,13 +54,15 @@ Context: Wild-type variant is the dominant strain during this time period. Testi
 Statistic Standard Deviate = 8.0736  
 P-value = 3.143e-16  
 Alternative Hypothesis: Greater  
-Moran I Statistic: 0.52109844  
+**Moran I Statistic: 0.52109844**   
 Expectation: -0.01190476  
 Variance: 0.00435839  
 
+GeoDa gave the same statistic at 0.521
+
 ![TP1_local](TP1_local.png)  
 
-###Test Posivitity Time Period 2: October 2020 - April 2021
+### Test Posivitity Time Period 2: October 2020 - April 2021
 Context: Alpha variant is dominant during this time period. First large winter wave. Vaccines rolled out to the public during this time period.
 
 ![TP2](TP2_072325.png)  
@@ -69,9 +71,11 @@ Context: Alpha variant is dominant during this time period. First large winter w
 Statistic Standard Deviate = 8.1653  
 P-value < 2.2e-16  
 Alternative Hypothesis: Greater  
-Moran I Statistic: 0.532781289  
+**Moran I Statistic: 0.532781289**  
 Expectation: -0.011904762  
 Variance: 0.00449855  
+
+GeoDa Statistic: 0.533
 
 ![TP2_local](TP2_local.png)  
 
@@ -85,9 +89,11 @@ Context: Delta variant becomes dominant variant worldwide by June 2021. Vaccines
 Statistic Standard Deviate = 5.5878  
 P-value = 1.15e-08  
 Alternative Hypothesis: Greater  
-Moran I Statistic: 0.360877725  
+**Moran I Statistic: 0.360877725**  
 Expectation: -0.01190476  
 Variance: 0.00445077  
+
+GeoDa Statistic: 0.361 
 
 ![TP3_local](TP3_local.png)  
 
@@ -101,9 +107,11 @@ Context: vaccination coverage just before boosters become recommended for all ad
 Statistic Standard Deviate = 3.1215  
 P-value = 0.0008998  
 Alternative Hypothesis: Greater  
-Moran I Statistic: 0.193659383  
+**Moran I Statistic: 0.193659383**  
 Expectation: -0.01190476  
 Variance: 0.004336903  
+
+GeoDa Statistic: 0.194
 
 ![Vax_local](Vax_local.png)  
 
