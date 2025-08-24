@@ -1,10 +1,22 @@
 # Marcela's COVID-19 Analysis
 
-This project explores trends in COVID-19 cases using the following datasets. The primary data sources include:
+This project explores trends in COVID-19 cases using the following datasets:
 
-- [update and add your own]
+We used daily reported test records collated by the Orange County Health Care Agency (OCHCA)
+from March 1, 2020 to November 30, 2021. Test data included the age, sex, race, ethnicity, city, and
+ZIP code, as well as an alpha-numeric identifier and the date and location (ZIP CODE??) of the
+test. We only included tests from samples collected on or before November 30, 2021, one day after the
+Centers for Disease Control and Prevention endorsed COVID-19 booster shots for all individuals 18
+years of age and older, and one day before the first confirmed case infected with Omicron variant was
+identified in the United States [32, 20].
 
-These sources provide daily updates on cases, testing, and vaccination metrics across OC.
+We used vaccine data from the COVID-19 Vaccine Progress Dashboard Data (downloaded from the
+California Open Data Portal in June 2023 (available at: https://data.ca.gov/dataset/covid-19-vaccine-
+progress-dashboard-data)). The data were available in geographic and demographic (age group) ag-
+gregations. Data on partial and full vaccination coverage by ZIP code in Orange County were made
+available on a weekly basis. The number of individuals either partially or fully vaccinated ages 18-49,
+50-64, and 65 and older were reported daily.
+
 
 ---
 
