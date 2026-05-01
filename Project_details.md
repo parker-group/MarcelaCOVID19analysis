@@ -1,32 +1,33 @@
 # Demographic Disparities and Vaccine Coverage: Predictors of SARS-CoV-2 Test Positivity in Orange County, California, USA
 Marcela Lopez<sup>1</sup>, Tetyana I. Vasylyeva<sup>2</sup>, Matthew Zahn<sup>3</sup>, Daniel M. Parker<sup>1,2</sup>
 
-###AUTHOR AFFILIATIONS
+### AUTHOR AFFILIATIONS
 1. Department of Epidemiology and Biostatistics, University of California, Irvine, California, USA 
 2. Department of Population Health and Disease Prevention, University of California, Irvine, California, USA
 3. Orange County Health Care Agency
 
-###ABSTRACT 
+### ABSTRACT 
 Background: While previous studies have documented demographic disparities in COVID-19 incidence in the United States, it remains unclear how these disparities evolved with the emergence of new variants, the introduction of vaccines, and changing levels of population immunity. Methods: We analyzed 1.8 million SARS-CoV-2 RT-PCR tests reported in Orange County, California, USA, between March 2020 and November 2021 to evaluate how vaccination coverage and demographic factors influenced infection risk. We fit a generalized additive model (GAM) with a binomial family distribution to model test positivity as a function of individuals’ sex, age, race/ethnicity, ZIP code-level attributes, and age-group-specific vaccination coverage, while accounting for time (epidemiological weeks) and location. Given the staggered vaccine roll-out by age group, we explored whether vaccination coverage impacted each age group differently. Results: Hispanic/Latinx individuals had greater than twice the odds of diagnosed infection (aOR: 2.19; 95% CI: 2.16-2.22) compared to non-Hispanic white individuals. Increasing age-specific vaccination coverage was strongly associated with reduced test positivity. However, despite being prioritized for early vaccination, reductions in test positivity among older adults were not apparent until vaccination coverage increased across younger age groups. Discussion: Persistent spatial disparities in test positivity, even after adjustment for demographic and ZIP code-level factors, indicate the continued importance of local structural and contextual drivers of infection risk. Population-level benefits of vaccination may depend not only on coverage within high-risk groups, but also on vaccination uptake among more socially active age groups.  
 
 ---
 ## Table of Contents 
 1. Data Sources [here](#data-sources)
 2. Data Processing in R [here](#data-processing-in-r)
+3. Models [here](#models)
 
 ---
 
 ## Data Sources
-**Orange County Health Care Agency:**  Test Result Data from RT-PCR tests conducted in Orange County from 2020-2021
 
+**Orange County Health Care Agency:**  Test Result Data from RT-PCR tests conducted in Orange County from 2020-2021
 
 **COVID-19 Vaccine Progress Dashboard Data:** Vaccination Coverage by ZIP Code and Age Group (downloaded from the California Open Data Portal in June 2023 (available at: https://data.ca.gov/dataset/covid-19-vaccineprogress-dashboard-data))
 
 **U.S. Census Bureau’s 2021 American Community Survey:** ZIP-code-level characteristics
+
 ---
 
-** 
-## 📊 Data Loading and Preprocessing in R
+## Data Processing in R
 
 Below is R script used to load and clean the dataset for analysis:
 
@@ -178,9 +179,9 @@ Group3 <- Pre_omicron %>%
   filter(Age >= 65)
 
 ```
-## MODELS
+## Models
 
-###MAIN MODEL 
+### MAIN MODEL 
 ```r
 main_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                 s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
@@ -189,9 +190,12 @@ main_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4
               + s(Longitude, Latitude, k = -1, bs = "sos"), random = list(IncidentID = ~1),
               family = binomial, data = Pre_omicron, 
               method="fREML", select = TRUE, gamma = 1.4, nthreads=8) 
+```
+---
 
-###AGE STRATIFIED MODELS
-
+### AGE STRATIFIED MODELS
+Group 1
+```r
 Group1_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                             s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
                           + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
@@ -199,7 +203,9 @@ Group1_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh
                           + s(Longitude, Latitude, k = -1, bs = "sos"), random = list(IncidentID = ~1),
                           family = binomial, data = Group1, 
                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
-
+```
+Group 2
+```r
 Group2_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                             s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
                           + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
@@ -207,7 +213,9 @@ Group2_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh
                           + s(Longitude, Latitude, k = -1, bs = "sos"), random = list(IncidentID = ~1),
                           family = binomial, data = Group2, 
                           method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
-
+```
+Group 3
+```r
 Group3_pre_omicron =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                              s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
                            + s(Percent_of_age_group_fully_vaccinated, k=-1, bs = "ts") 
@@ -215,11 +223,13 @@ Group3_pre_omicron =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Per
                            + s(Longitude, Latitude, k = -1, bs = "sos"), random = list(IncidentID = ~1),
                            family = binomial, data = Group3, 
                            method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
+```
+---
 
-###BINNED MODELS 
+### BINNED MODELS 
 
-#Group1
-
+Group 1
+```r
 Group1$Vaccination_bins <- relevel(as.factor(Group1$Vaccination_bins), ref = "30-35%")
 
 group1_binned =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
@@ -229,8 +239,9 @@ group1_binned =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_h
                      + Vaccination_bins,
                      family = binomial, data = Group1, 
                      method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
-
-#Group 2 
+```
+Group 2 
+```r
 Group2$Vaccination_bins <- relevel(as.factor(Group2$Vaccination_bins), ref = "45-50%")
 group2_binned =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                        s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
@@ -239,7 +250,9 @@ group2_binned =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_h
                      + Vaccination_bins,
                      family = binomial, data = Group2, 
                      method="fREML", select = TRUE, gamma = 1.4, nthreads=8)  
-#Group 3
+```
+Group 3
+```r
 Group3$Vaccination_bins <- relevel(as.factor(Group3$Vaccination_bins), ref = "75-80%")
 group3_binned =   bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4_or_more, k=-1, bs = "ts") +
                         s(Population_density, k=-1, bs = "ts") + s(Week, k=-1, bs = "ts") 
