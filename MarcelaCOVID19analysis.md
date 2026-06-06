@@ -60,7 +60,7 @@ Global and local Moran's I tests were run for 4 ZIP-level variables
 ### Results for Test Posivitity Time Period 1: March 2020 - September 2020 
 Context: Wild-type variant is the dominant strain during this time period. Testing infrastructure developing. Vaccines not available to public yet.
 
-![TP1](TP1_072325.png)  
+![TP1](figures/TP1_072325.png)  
 
 *Global Moran's I Results*  
 Statistic Standard Deviate = 8.0736  
@@ -72,12 +72,12 @@ Variance: 0.00435839
 
 GeoDa gave the same statistic at 0.521
 
-![TP1_local](TP1_local.png)  
+![TP1_local](figures/TP1_local.png)  
 
 ### Test Posivitity Time Period 2: October 2020 - April 2021
 Context: Alpha variant is dominant during this time period. First large winter wave. Vaccines rolled out to the public during this time period.
 
-![TP2](TP2_072325.png)  
+![TP2](figures/TP2_072325.png)  
 
 *Global Moran's I Results*  
 Statistic Standard Deviate = 8.1653  
@@ -89,13 +89,13 @@ Variance: 0.00449855
 
 GeoDa Statistic: 0.533
 
-![TP2_local](TP2_local.png)  
+![TP2_local](figures/TP2_local.png)  
 
 
 ### Test Posivitity Time Period 3: May 2021 - November 2021
 Context: Delta variant becomes dominant variant worldwide by June 2021. Vaccines are fully available to public. Ends right before the omicron variant takes over in December 2021.
 
-![TP3](TP3_072325.png)  
+![TP3](figures/TP3_072325.png)  
 
 *Global Moran's I Results*
 Statistic Standard Deviate = 5.5878  
@@ -107,13 +107,13 @@ Variance: 0.00445077
 
 GeoDa Statistic: 0.361 
 
-![TP3_local](TP3_local.png)  
+![TP3_local](figures/TP3_local.png)  
 
 
 ### Vaccination Coverage by November 30, 2021
 Context: vaccination coverage just before boosters become recommended for all adults 18 and older 
 
-![Vax_coverage](Vaccination_coverage.png)  
+![Vax_coverage](figures/Vaccination_coverage.png)  
 
 *Global Moran's I Results*  
 Statistic Standard Deviate = 3.1215  
@@ -125,7 +125,7 @@ Variance: 0.004336903
 
 GeoDa Statistic: 0.194
 
-![Vax_local](Vax_local.png)  
+![Vax_local](figures/Vax_local.png)  
 
 
 
@@ -210,41 +210,41 @@ geojson_sp$local_moran_vax <- local_moran_vax_result[, 1]
 
 *Version 1  - square aOR with no vertical bars for lower and upper bounds*
 
-![Forest_plot_A](Forest_plot_3.png)  
+![Forest_plot_A](figures/Forest_plot_3.png)  
 
 *Version 2  - cicle aOr with with vertical bars at lower and upper bounds*
 
-![Forest_plot_B](Forest_plot_full_model_2.png)
+![Forest_plot_B](figures/Forest_plot_full_model_2.png)
 
 
 ### Updated Pandemic Timeline Figure - Vaccine Coverage Plot
 
 *Version 1 - Points where splines crossed 0*  
 
-![Plot2](Plot2_singular_point.png)
+![Plot2](figures/Plot2_singular_point.png)
 
 *Version 2 - Dashed line where spline crossed 0*  
 
-![Plot2A](Plot2_dashed.png)  
+![Plot2A](figures/Plot2_dashed.png)  
 
 *Version 3 - Dashed lines where confidence band crossed 0*  
 
-![Plot2B](Plot2_CI_dashed.png)  
+![Plot2B](figures/Plot2_CI_dashed.png)  
 
 *Version 4 - Color bands where confidence band crossed 0*
 
-![Plot2C](Plot2_bands.png)
+![Plot2C](figures/Plot2_bands.png)
 
 *Version 5 - Full Version*
 
-![Double_plot](Double_plot.png)
+![Double_plot](figures/Double_plot.png)
 
 
 ### Pandemic Timeline
  
 The following figure is an attempt to synthesize as much information as possible. The timelines across the three levels are lined up to contextualize findings and so that comparisons can be made across time. 
 
-![full_figure](Three_level_figure.png)
+![full_figure](figures/Three_level_figure.png)
 
 
 ---
@@ -264,7 +264,7 @@ full_model =  bam(Positive ~ Sex + Agegroup + Race_or_ethnicity + s(Percent_hh_4
 ```
 **Splines for Main Model**  
 
-![full_model](Full_model_splines.png)
+![full_model](figures/Full_model_splines.png)
 
 From this model, we can see that the percent of age group fully vaccinated is generally inversely related to the log-odds of testing positive for COVID-19. By the time a patients’ age group was over 40% vaccinated, their log odds of testing positive became less than 0. 
 
@@ -339,17 +339,17 @@ AIC group 3: 153,026.1
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](g1_no_lag.png)
+![Splines for Group 1: ages 18 -49](figures/g1_no_lag.png)
 
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](g2_no_lag.png)
+![Splines for Group 2: ages 50-64](figures/g2_no_lag.png)
 
 
 **Splines for Group 3: ages 65+**  
 
-![Splines for Group 3: ages 65+](g3_no_lag.png)
+![Splines for Group 3: ages 65+](figures/g3_no_lag.png)
 
 After correcting the time period to include all samples from March 2020 - November 2021, the spline functions for all three age groups display similar downward trends with increasing percentage of vaccination, with coefficients ranging from 6 to -6. This downward trends is similar to the one from the full model shown above. We are no longer seeing an uptick at the end. 
 
@@ -381,7 +381,7 @@ AIC(bam_1_month_lag)
 AIC: 976,608.1
 
 **Splines for full model lagged by 1 month**
-![Splines for 1 month lag](bam_1_month_lag.png)
+![Splines for 1 month lag](figures/bam_1_month_lag.png)
 
 ---
 
@@ -434,17 +434,17 @@ AIC group 3: 152,956.1
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](g1_1m_lag.png)
+![Splines for Group 1: ages 18 -49](figures/g1_1m_lag.png)
 
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](g2_1m_lag.png)
+![Splines for Group 2: ages 50-64](figures/g2_1m_lag.png)
 
 
 **Splines for Group 3: ages 65+**  
 
-![Splines for Group 3: ages 65+](g3_1m_lag.png)
+![Splines for Group 3: ages 65+](figures/g3_1m_lag.png)
 
 When delaying vaccination coverage by a month, the spline functions for vaccination coverage for all three age group shifted over to the left, with the splines crossing zero at 15%, 15%, and 65% respectively. As a check to the question posed underneath the non-lagged age-stratified spline functions, it will be good to check whether these percentages also line up with the same time period.
 
@@ -471,7 +471,7 @@ AIC(bam_2_month_lag)
 AIC: 976,764.3
 
 **Splines for full model lagged by 2 months**
-![Splines for 2 month lag](bam_2_month_lag.png)
+![Splines for 2 month lag](figures/bam_2_month_lag.png)
 
 
 ## Age Stratified Models, Lagged by 2 months
@@ -523,17 +523,17 @@ AIC group 3: 152,975.1
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](G1_2m_lag_splines.png)
+![Splines for Group 1: ages 18 -49](figures/G1_2m_lag_splines.png)
 
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](G2_2m_lag_splines.png)
+![Splines for Group 2: ages 50-64](figures/G2_2m_lag_splines.png)
 
 
 **Splines for Group 3: ages 65+**  
 
-![Splines for Group 3: ages 65+](G3_2m_lag_splines.png)
+![Splines for Group 3: ages 65+](figures/G3_2m_lag_splines.png)
 
 ---
 
@@ -557,7 +557,7 @@ AIC(interaction_only)
 AIC: 975,214.5
 
 **Splines for full model with interaction term**
-![Interaction_only_splines](interaction_only_splines.png)
+![Interaction_only_splines](figures/interaction_only_splines.png)
 
 
 ## Models Stratified by Age Group, with Interaction Term
@@ -610,15 +610,15 @@ AIC group 3: 152,749
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](g1_no_lag_int.png)
+![Splines for Group 1: ages 18 -49](figures/g1_no_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](g2_no_lag_int.png)
+![Splines for Group 2: ages 50-64](figures/g2_no_lag_int.png)
 
 **Splines for Group 3: ages 65+**   
 
-![Splines for Group 3: ages 65+](g3_no_lag_int.png) 
+![Splines for Group 3: ages 65+](figures/g3_no_lag_int.png) 
 
 ---
 
@@ -672,15 +672,15 @@ AIC group 3: 152,743.3
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](g1_1m_lag_int.png)
+![Splines for Group 1: ages 18 -49](figures/g1_1m_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](g2_1m_lag_int.png)
+![Splines for Group 2: ages 50-64](figures/g2_1m_lag_int.png)
 
 **Splines for Group 3: ages 65+**  
 
-![Splines for Group 3: ages 65+](g3_1m_lag_int.png)
+![Splines for Group 3: ages 65+](figures/g3_1m_lag_int.png)
 
 ---
 
@@ -734,15 +734,15 @@ AIC group 3: 152,769.3
 
 **Splines for Group 1: ages 18 -49**  
 
-![Splines for Group 1: ages 18 -49](g1_2m_lag_int.png)
+![Splines for Group 1: ages 18 -49](figures/g1_2m_lag_int.png)
 
 **Splines for Group 2: ages 50-64**  
 
-![Splines for Group 2: ages 50-64](g2_2m_lag_int.png)
+![Splines for Group 2: ages 50-64](figures/g2_2m_lag_int.png)
 
 **Splines for Group 3: ages 65+**  
 
-![Splines for Group 3: ages 65+](g3_2m_lag_int.png)  
+![Splines for Group 3: ages 65+](figures/g3_2m_lag_int.png)  
 
 
 ---
